@@ -1,0 +1,24 @@
+flowchart TD
+    Start([Start]) --> Upload[User Uploads MRI Scan]
+    Upload --> Valid{File Valid?}
+    Valid -- No --> Error[Show Error Message]
+    Error --> End([End])
+    Valid -- Yes --> Preprocess[Preprocess Scaling & Normalization]
+    
+    Preprocess --> Split
+    subgraph Parallel[Parallel Processing]
+        Split{Split} --> AI[CNN Disease Prediction]
+        Split --> Tumor[Tumor Localization]
+        Split --> Conn[Generate Connectome]
+        Split --> Sim[Run Jansen-Rit Simulation]
+    end
+    
+    AI --> Join
+    Tumor --> Join
+    Conn --> Join
+    Sim --> Join
+    
+    Join{Join} --> Consolidate[Consolidate Results]
+    Consolidate --> Render[Render 3D Brain Viewer]
+    Render --> Report[Generate Dashboard Report]
+    Report --> End

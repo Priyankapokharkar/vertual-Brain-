@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% block title %}Disease Detection - VBI{% endblock %}
+
+{% block content %}
+<div class="page-container">
+    <div class="page-header">
+        <h1 class="page-title">Brain Disease Detection</h1>
+        <p class="page-subtitle">Upload brain imaging data for AI-powered disease classification</p>
+    </div>
+
+    <div class="detection-layout">
+        <!-- Upload Section -->
+        <div class="upload-section card">
+            <h2>Upload Brain Imaging Data</h2>
+            <p class="section-description">Supported formats: DICOM, PNG, JPG</p>
+
+            <div class="upload-zone" id="upload-zone">
+                <svg class="upload-icon" viewBox="0 0 24 24">
+                    <path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z" />
+                </svg>
+                <p class="upload-text">Drag and drop file here or click to browse</p>
+                <input type="file" id="file-input" accept=".nii,.nii.gz,.dcm,.png,.jpg,.jpeg" hidden>
+                <button class="btn btn-primary" onclick="document.getElementById('file-input').click()">
+                    Select File
+                </button>
+            </div>
+
+            <div id="file-info" class="file-info" style="display: none;">
+                <p><strong>Selected:</strong> <span id="file-name">-</span></p>
+                <p><strong>Size:</strong> <span id="file-size">-</span></p>
+            </div>
+
+            <div class="button-group" style="margin-top: 20px;">
+                <button id="detect-btn" class="btn btn-primary btn-lg" disabled>
+                    Run Detection
+                </button>
+                <button id="demo-btn" class="btn btn-secondary btn-lg">
+                    Use Demo Data
+                </button>
+            </div>
+        </div>
+
+        <!-- Results Section -->
+        <div class="results-section card">
+            <h2>Detection Results</h2>
+
+            <div id="results-placeholder" class="results-placeholder">
+                <svg viewBox="0 0 24 24" style="width: 80px; height: 80px; opacity: 0.3;">
+                    <path
+                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+                </svg>
+                <p>Upload imaging data to see results</p>
+            </div>
+
+            <div id="results-content" style="display: none;">
+                <!-- Predicted Disease -->
+                <div class="result-card">
+                    <h3>Predicted Condition</h3>
+                    <div id="disease-badge" class="result-badge">
+                        <span id="disease-name">Healthy</span>
+                    </div>
+                    <div id="simulation-status"
+                        style="margin-top: 10px; font-size: 0.9rem; color: #6366f1; display: none;">
+                        <i class="fas fa-sync fa-spin"></i> Initializing Neural Simulation...
+                    </div>
+                    <div class="confidence-score">
+                        <span>Confidence:</span>
+                        <strong id="confidence-value">-</strong>
+                    </div>
+                    <div id="threshold-warning" class="alert alert-error"
+                        style="display: none; margin-top: 15px; font-size: 0.85rem; padding: var(--spacing-sm) var(--spacing-md); border-radius: 8px; align-items: center; gap: 8px;">
+                        <svg class="alert-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            style="width: 16px; height: 16px; flex-shrink: 0;">
+                            <path
+                                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                                stroke-width="2" />
+                        </svg>
+                        <span id="threshold-warning-text"></span>
+                    </div>
+
+                </div>
+
+                <!-- Probability Distribution -->
+                <div class="result-card">
+                    <h3>Disease Probabilities</h3>
+                    <div style="position: relative; height: 300px; width: 100%;">
+                        <canvas id="probability-chart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Feature Importance -->
+                <div class="result-card">
+                    <h3>Brain Region Analysis</h3>
+                    <div style="position: relative; height: 300px; width: 100%;">
+                        <canvas id="feature-chart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Recommendations -->
+                <div class="result-card">
+                    <h3>Clinical Recommendations</h3>
+                    <ul id="recommendations-list" class="recommendations-list">
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Loading Modal -->
+<div id="loading-modal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <div class="spinner"></div>
+        <p>Analyzing brain data...</p>
+        <p class="progress-text" id="progress-text">Preprocessing...</p>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/disease-detector.js') }}"></script>
+{% endblock %}

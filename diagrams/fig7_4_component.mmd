@@ -1,0 +1,31 @@
+graph TD
+    subgraph "Client Tier"
+        WebUI[Dashboard UI]
+        Visualization[3D Rendering Engine - Three.js]
+    end
+
+    subgraph "Application Tier (Flask)"
+        API[Inference API]
+        Auth[Authentication Module]
+        Config[Global Configuration]
+    end
+
+    subgraph "Core Engine Tier"
+        ML_Engine[AI Disease Detector]
+        Sim_Engine[Neural Simulation Engine]
+        Vascular[Vessel flow Analyzer]
+    end
+
+    subgraph "Data Tier"
+        Storage[(NIfTI / Patient Data)]
+        Models[(Pre-trained AI Models)]
+    end
+
+    WebUI <--> API
+    Visualization <--> API
+    API <--> ML_Engine
+    API <--> Sim_Engine
+    API <--> Vascular
+    ML_Engine <--> Storage
+    ML_Engine <--> Models
+    Sim_Engine <--> Storage

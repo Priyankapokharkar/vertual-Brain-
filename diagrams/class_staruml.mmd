@@ -1,0 +1,116 @@
+classDiagram
+    %% Class declarations with fields and methods
+    class FlaskApp {
+        +create_app(config_name) Flask
+        +register_blueprints(app) void
+    }
+    
+    class API_Routes {
+        +detect_disease() Response
+        +get_visualization_data(patient_id) Response
+        +detect_tumor_spatial() Response
+        +simulate_neural_activity() Response
+        +get_connectome(patient_id) Response
+        +upload_imaging_data() Response
+        +get_blockage_analysis(patient_id) Response
+        +infer_parameters() Response
+    }
+    
+    class Config {
+        +SECRET_KEY str
+        +UPLOAD_FOLDER Path
+        +MODELS_DIR Path
+        +DISEASE_CLASSES list
+        +NUM_BRAIN_REGIONS int
+        +get_config(env) Config
+    }
+    
+    class DataProcessor {
+        +target_shape tuple
+        +load_nifti(file_path) ndarray
+        +load_image(file_path) ndarray
+        +load_dicom(file_path) ndarray
+        +normalize(data, method) ndarray
+        +resize(data, target_shape) ndarray
+        +skull_strip(data, threshold) ndarray
+        +extract_features(data) dict
+        +preprocess(file_path, normalize, skull_strip, resize) ndarray
+        +create_synthetic_data(shape) ndarray
+    }
+    
+    class DiseaseDetector {
+        +model_path Path
+        +classes list
+        +model KerasModel
+        +is_loaded bool
+        +build_model(input_shape) KerasModel
+        +load_model() bool
+        +predict(brain_data) dict
+        +get_feature_importance(brain_data) dict
+        +get_tumor_localization(brain_data) dict
+        -_calculate_risk_level(confidence, disease) str
+        -_get_recommendations(disease, confidence) list
+    }
+    
+    class Connectome {
+        +num_regions int
+        +weights ndarray
+        +region_names list
+        +region_positions ndarray
+        +generate_synthetic(connectivity_density) void
+        +get_weighted_matrix() ndarray
+        +get_network_metrics() dict
+        +get_hub_regions(top_k) list
+        +get_modular_structure() dict
+    }
+    
+    class NeuralMassModel {
+        +num_regions int
+        +dt float
+        +simulate_step(state, coupling) ndarray
+        +simulate_disease_condition(duration, connectivity_matrix, disease_type) tuple
+        +calculate_functional_connectivity(activity) ndarray
+        +analyze_oscillations(time, activity) dict
+    }
+    
+    class BayesianInference {
+        +num_params int
+        +estimate_functional_connectivity_params(observed_fc, structural_conn) list
+    }
+    
+    class BrainMesh {
+        +vertices ndarray
+        +faces ndarray
+        +generate_synthetic_brain(resolution) void
+        +parcellate(num_regions) void
+        +apply_disease_deformation(deform_type, severity, focal_point) dict
+        +export_to_threejs() dict
+    }
+    
+    class VesselNetwork {
+        +vessels list
+        +flow_rates list
+        +generate_synthetic_network(num_vessels, network_type) void
+        +calculate_flow() void
+        +apply_spatial_damage(focal_point, radius, max_severity) void
+        +get_network_statistics() dict
+        +export_to_threejs() dict
+    }
+    
+    class BlockageDetector {
+        +sensitivity float
+        +analyze_network(vessels, flow_rates) list
+        +export_report() dict
+    }
+    
+    %% Relationships
+    FlaskApp --> API_Routes : registers
+    API_Routes --> Config : reads config
+    API_Routes --> DataProcessor : uses for preprocessing
+    API_Routes --> DiseaseDetector : uses for CNN prediction
+    API_Routes --> Connectome : generates structural network
+    API_Routes --> NeuralMassModel : simulates population dynamics
+    API_Routes --> BayesianInference : performs parameter fitting
+    API_Routes --> BrainMesh : generates parcellated geometry
+    API_Routes --> VesselNetwork : constructs vascular model
+    VesselNetwork --> BlockageDetector : evaluates stenosis

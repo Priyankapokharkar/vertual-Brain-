@@ -1,0 +1,21 @@
+graph TD
+    Doctor((Medical Professional))
+    Admin((System Administrator))
+
+    subgraph VBI_Platform ["Virtual Brain Inference Platform"]
+        UC1[Upload Brain MRI/CT]
+        UC2[View 3D Brain Anatomy]
+        UC3[Simulate Neural Activity]
+        UC4[Detect Brain Disorders]
+        UC5[Analyze Vascular Flow]
+        UC6[Configure System Models]
+        UC7[Manage Patient Data]
+    end
+
+    Doctor --- UC1
+    Doctor --- UC2
+    Doctor --- UC3
+    Doctor --- UC4
+    Doctor --- UC5
+    Admin --- UC6
+    Admin --- UC7

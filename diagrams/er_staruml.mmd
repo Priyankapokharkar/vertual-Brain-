@@ -1,0 +1,55 @@
+erDiagram
+    PATIENT ||--o{ SCAN_UPLOAD : "undergoes"
+    PATIENT ||--o{ NEURAL_SIMULATION : "simulates"
+    PATIENT ||--o{ VESSEL_ANALYSIS : "evaluates flow"
+    SCAN_UPLOAD ||--o| PREDICTION_REPORT : "produces results"
+    
+    PATIENT {
+        string patient_id PK "UUID"
+        string full_name "Name of patient"
+        int age "Age in years"
+        string gender "M / F / Other"
+        string medical_history "Clinical notes/past conditions"
+        timestamp created_at "Timestamp of creation"
+    }
+    
+    SCAN_UPLOAD {
+        string scan_id PK "UUID"
+        string patient_id FK "References PATIENT"
+        string filename "Saved filename (e.g. mri_scan.nii)"
+        string file_type "nii | nii.gz | dcm | png"
+        int file_size_bytes "Size of upload"
+        string file_path "Absolute disk location"
+        timestamp uploaded_at "Timestamp of upload"
+    }
+    
+    PREDICTION_REPORT {
+        string report_id PK "UUID"
+        string scan_id FK "References SCAN_UPLOAD (One-To-One)"
+        string predicted_disease "Predicted class name"
+        float confidence_score "Probability [0.0 - 1.0]"
+        string risk_level "low | moderate | high"
+        string recommendations "Clinical directives (JSON array)"
+        timestamp created_at "Timestamp of inference"
+    }
+    
+    NEURAL_SIMULATION {
+        string simulation_id PK "UUID"
+        string patient_id FK "References PATIENT"
+        float duration_seconds "Length of ODE run"
+        string disease_type "healthy | alzheimers | parkinsons | stroke"
+        string network_metrics "Graph metrics summary (JSON)"
+        string structural_matrix_path "Path to saved connectome weights"
+        string fc_matrix_path "Path to output functional connectivity"
+        timestamp created_at "Timestamp of simulation"
+    }
+    
+    VESSEL_ANALYSIS {
+        string analysis_id PK "UUID"
+        string patient_id FK "References PATIENT"
+        int vessel_count "Number of vessels modeled"
+        float average_flow_rate "Average velocity parameter"
+        float blockage_severity "Overall occlusion level [0.0 - 1.0]"
+        string blockage_vessels "Index list of occluded segments"
+        timestamp created_at "Timestamp of analysis"
+    }

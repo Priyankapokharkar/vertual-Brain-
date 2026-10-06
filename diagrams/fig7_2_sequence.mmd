@@ -1,0 +1,25 @@
+sequenceDiagram
+    participant User
+    participant WebUI
+    participant API as Flask API
+    participant DP as DataProcessor
+    participant DD as DiseaseDetector
+    participant NM as NeuralMassModel
+    participant 3DV as Three.js Viewer
+
+    User->>WebUI: Upload MRI (.nii)
+    WebUI->>API: POST /api/detect
+    API->>DP: preprocess(file)
+    DP-->>API: brain_data
+    API->>DD: predict(brain_data)
+    DD-->>API: {disease: "Glioma", conf: 0.95}
+    API-->>WebUI: Analysis Result
+    
+    User->>WebUI: Click "Run Simulation"
+    WebUI->>API: POST /api/simulate
+    API->>NM: simulate(params)
+    NM-->>API: signals, connectivity
+    API-->>WebUI: Simulation Data
+    
+    WebUI->>3DV: Render(brain_mesh, vessels)
+    3DV-->>User: Interactive 3D View

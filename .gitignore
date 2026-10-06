@@ -1,0 +1,74 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
+venv/
+venv310/
+ENV/
+
+# Environment variables
+.env
+.flaskenv
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Project specific
+uploads/
+results/
+# models/*.h5
+# models/*.json
+# !models/disease_classifier.h5
+
+# Data
+data/
+archive*/
+*.nii
+*.nii.gz
+*.mat
+
+# Models
+models/pretrained/*.h5
+models/pretrained/*.json
+!models/pretrained/.gitkeep
+
+# Logs
+*.log
+logs/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Archives
+*.zip
+*.7z
+*.rar
+*.tar
+*.gz
+*.tgz
+# Large model files are still ignored (already handled above, or manually)
+# !models/disease_classifier.h5

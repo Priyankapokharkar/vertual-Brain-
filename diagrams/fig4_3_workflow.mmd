@@ -1,0 +1,17 @@
+graph LR
+    P[Patient Scan Data] --> S[VBI System]
+    S --> R[Diagnostic Report]
+    S --> V[3D Simulation & Viz]
+    
+    subgraph S["Virtual Brain Inference System"]
+        DP[Data Processor]
+        DD[Disease Detector]
+        SIM[Neural Simulator]
+        VZ[WebGL Visualizer]
+        
+        DP --> DD
+        DD --> SIM
+        SIM --> VZ
+    end
+    
+    style S fill:#fff4dd,stroke:#d4a017,stroke-width:2px

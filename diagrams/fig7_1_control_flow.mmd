@@ -1,0 +1,12 @@
+flowchart TD
+    A[Start API: /simulate] --> B{Valid JSON?}
+    B -- No --> C[Error 400]
+    B -- Yes --> D[Init Connectome]
+    D --> E[Generate Weights]
+    E --> F[Init NeuralMassModel]
+    F --> G[Loop: RK4 Step]
+    G --> H{Time < Duration?}
+    H -- Yes --> G
+    H -- No --> I[Compute FC Matrix]
+    I --> J[Return JSON Response]
+    J --> K[End]

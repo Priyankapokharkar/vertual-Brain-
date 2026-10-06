@@ -1,0 +1,28 @@
+graph TB
+    subgraph "Frontend Layer (Client)"
+        UI[Glassmorphic Web Dashboard]
+        V3D[Three.js 3D Brain Viewer]
+        UI --- V3D
+    end
+
+    subgraph "API Layer (Flask/Python)"
+        RT[RESTful Routes]
+        CFG[Config Manager]
+        RT --- CFG
+    end
+
+    subgraph "Backend Engine (Scientific/AI)"
+        DL[Deep Learning / CNN Module]
+        NM[Jansen-Rit Neural Mass Model]
+        VN[Vessel Network Analysis]
+        CON[Connectome Mapping]
+        DL --- NM --- VN --- CON
+    end
+
+    UI --> RT
+    RT --> Backend_Engine
+    Backend_Engine --> RT
+    RT --> UI
+    
+    style UI fill:#bbf,stroke:#333
+    style Backend_Engine fill:#dfd,stroke:#333

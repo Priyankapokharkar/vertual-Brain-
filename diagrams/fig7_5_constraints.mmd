@@ -1,0 +1,28 @@
+graph LR
+    C[Constraint Analysis: Virtual Brain Inference] --> HW[Hardware Constraints]
+    C --> SW[Software Constraints]
+    C --> PR[Performance Constraints]
+    C --> DT[Data Constraints]
+    C --> US[Usability Constraints]
+
+    HW --> HW1["GPU with CUDA support for fast ODEs"]
+    HW --> HW2["Minimum 16GB RAM for high-res NIfTI"]
+    
+    SW --> SW1["Python 3.10+ Ecosystem"]
+    SW --> SW2["WebGL 2.0 compatible Browser"]
+    
+    PR --> PR1["Simulations must run within < 30s"]
+    PR --> PR2["3D Rendering >= 60 FPS"]
+    
+    DT --> DT1["Support for .nii, .nii.gz, MRI, CT"]
+    DT --> DT2["Patient Data anonymization (HIPAA)"]
+    
+    US --> US1["Glassmorphic Interactive Dashboard"]
+    US --> US2["Cross-platform accessibility"]
+    
+    style C fill:#f96,stroke:#333
+    style HW fill:#bbf,stroke:#333
+    style SW fill:#bbf,stroke:#333
+    style PR fill:#dfd,stroke:#333
+    style DT fill:#dfd,stroke:#333
+    style US fill:#fff4dd,stroke:#333

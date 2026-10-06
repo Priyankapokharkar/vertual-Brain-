@@ -1,0 +1,14 @@
+graph TD
+    User((User)) -- MRI Data --> P1[1.0 Preprocess Data]
+    P1 -- Clean Data --> P2[2.0 AI Detection]
+    P1 -- Structural Info --> P3[3.0 Neural Simulation]
+    P2 -- Prediction --> D1[(Storage)]
+    P3 -- Time Series --> P4[4.0 Visualization]
+    P4 -- 3D Models/Charts --> User
+    
+    subgraph "Level 1 DFD"
+    P1
+    P2
+    P3
+    P4
+    end

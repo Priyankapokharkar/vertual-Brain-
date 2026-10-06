@@ -1,0 +1,14 @@
+graph TD
+    subgraph "3.0 Neural Simulation Detail"
+        S1[3.1 Generate Connectome]
+        S2[3.2 Apply Disease Modifiers]
+        S3[3.3 Solve ODEs via RK4]
+        S4[3.4 Compute Connectivity]
+        
+        S1 --> S2
+        S2 --> S3
+        S3 --> S4
+    end
+    
+    In[Structural Data] --> S1
+    S4 --> Out[Dynamic Model]

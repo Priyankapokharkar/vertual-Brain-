@@ -1,0 +1,37 @@
+flowchart TD
+    %% Styling configurations for StarUML look
+    classDef default fill:#FFFFE0,stroke:#333333,stroke-width:1px,color:#000000;
+    classDef startEnd fill:#EAEAEA,stroke:#333333,stroke-width:1px,color:#000000,rx:20,ry:20;
+    classDef decision fill:#FFF0D0,stroke:#333333,stroke-width:1px,color:#000000;
+    classDef forkJoin fill:#333333,stroke:#333333,stroke-width:1.5px,color:#FFFFFF;
+
+    Start([Start]) --> Upload[User Uploads MRI / Brain Scan File]
+    Upload --> ValidCheck{File Format Valid?}
+    
+    ValidCheck -- No --> Error[Display Upload Error Message]
+    Error --> End([End])
+    
+    ValidCheck -- Yes --> Preprocess[Preprocess Scan Data<br/>- Skull Stripping<br/>- Spatial Resizing<br/>- Intensity Normalization]
+    
+    Preprocess --> Fork[ ]
+    
+    subgraph Parallel[Parallel Processing Engine]
+        Fork --> AI[CNN Disease Prediction<br/>- Classify Pathology<br/>- Compute Probabilities]
+        Fork --> Tumor[Tumor Localization<br/>- Estimate Centroid Coordinates<br/>- Estimate Tumor Radius]
+        Fork --> Connectome[Connectome Analysis<br/>- Generate Coupling Matrix<br/>- Calculate Graph Metrics]
+        Fork --> Simulation[Jansen-Rit Neural Mass Simulation<br/>- Solve ODEs via RK4 Solver<br/>- Generate EEG Oscillations]
+    end
+    
+    AI --> Join[ ]
+    Tumor --> Join
+    Connectome --> Join
+    Simulation --> Join
+    
+    Join --> Consolidate[Consolidate Inference Results<br/>- Map Patient ID Metadata<br/>- Evaluate Disease Risk Level]
+    Consolidate --> Render3D[Render Interactive 3D Visualizer<br/>- Map Brain Mesh Geometry<br/>- Render Vascular Flow & Occlusions]
+    Render3D --> Dashboard[Generate Clinical Report<br/>- Render Chart.js Oscillations<br/>- Output Recommendations]
+    Dashboard --> End
+    
+    class Start,End startEnd;
+    class ValidCheck decision;
+    class Fork,Join forkJoin;

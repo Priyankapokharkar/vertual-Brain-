@@ -1,0 +1,8 @@
+graph TD
+    classDef scenario fill:#fdf,stroke:#333,stroke-width:1px
+    
+    S1["Scenario 1: Early Detection<br/>Patient MRI shows subtle amyloid plaques.<br/>Outcome: AI flags Early-Stage Alzheimer's."]:::scenario
+    S2["Scenario 2: Tumor Resection Planning<br/>3D Localization finds Glioma at (24, -10, 5).<br/>Outcome: Surgical coordinates generated."]:::scenario
+    S3["Scenario 3: Vascular Stroke Simulation<br/>Focal blockage in Middle Cerebral Artery.<br/>Outcome: Predicted tissue atrophy visualized."]:::scenario
+    
+    S1 --- S2 --- S3

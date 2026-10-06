@@ -1,0 +1,166 @@
+{% extends "base.html" %}
+
+{% block title %}3D Brain Visualization - VBI{% endblock %}
+
+{% block extra_css %}
+<style>
+    #visualization-canvas {
+        width: 100%;
+        height: calc(100vh - 120px);
+        background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
+        position: relative;
+    }
+
+    .controls-panel {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border-radius: 12px;
+        padding: 20px;
+        min-width: 250px;
+        z-index: 100;
+    }
+
+    .info-panel {
+        position: absolute;
+        bottom: 20px;
+        left: 20px;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border-radius: 12px;
+        padding: 20px;
+        min-width: 300px;
+        z-index: 100;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div id="visualization-canvas">
+    <!-- Three.js canvas will be inserted here -->
+
+    <!-- Controls Panel -->
+    <div class="controls-panel">
+        <h3 style="margin-top: 0; color: white;">Visualization Controls</h3>
+
+        <div class="control-group">
+            <label>
+                <input type="checkbox" id="show-brain" checked> Show Brain Surface
+            </label>
+        </div>
+
+        <div class="control-group">
+            <label>
+                <input type="checkbox" id="show-vessels" checked> Show Blood Vessels
+            </label>
+        </div>
+
+        <div class="control-group">
+            <label>
+                <input type="checkbox" id="show-blockages" checked> Highlight Blockages
+            </label>
+        </div>
+
+        <div class="control-group">
+            <label>
+                <input type="checkbox" id="show-arteries" checked> Arteries
+            </label>
+        </div>
+
+        <div class="control-group">
+            <label>
+                <input type="checkbox" id="show-veins" checked> Veins
+            </label>
+        </div>
+
+        <hr style="border-color: rgba(255,255,255,0.2); margin: 15px 0;">
+
+        <h4 style="margin-top: 0; color: white;">Simulation</h4>
+        <div class="control-group">
+            <label style="color: white;">Condition</label>
+            <select id="sim-disease-type" style="width: 100%; padding: 5px; border-radius: 4px; margin-top: 5px;">
+                <option value="healthy">Healthy</option>
+                <option value="glioma">Brain Tumor (Glioma)</option>
+                <option value="meningioma">Brain Tumor (Meningioma)</option>
+                <option value="pituitary">Brain Tumor (Pituitary)</option>
+                <option value="alzheimer_mild">Alzheimer's (Mild)</option>
+                <option value="alzheimer_moderate">Alzheimer's (Moderate)</option>
+                <option value="alzheimer_very_mild">Alzheimer's (Very Mild)</option>
+                <option value="ms">Multiple Sclerosis</option>
+                <option value="parkinson">Parkinson's Disease</option>
+                <option value="epilepsy">Epilepsy</option>
+                <option value="stroke">Stroke</option>
+            </select>
+        </div>
+        <button id="run-sim-btn" class="btn btn-primary"
+            style="width: 100%; margin-top: 10px; background-color: #ec4899; border-color: #ec4899;">
+            Run Simulation
+        </button>
+
+        <hr style="border-color: rgba(255,255,255,0.2); margin: 15px 0;">
+
+        <div class="control-group">
+            <label style="color: white;">Patient ID</label>
+            <input type="text" id="patient-id" value="{{ patient_id }}"
+                style="width: 100%; padding: 8px; border-radius: 6px; border: none;">
+        </div>
+
+        <button id="load-data-btn" class="btn btn-primary" style="width: 100%; margin-top: 10px;">
+            Load Patient Data
+        </button>
+
+        <button id="toggle-rotation-btn" class="btn btn-secondary" style="width: 100%; margin-top: 10px;">
+            Toggle Rotation
+        </button>
+
+        <hr style="border-color: rgba(255,255,255,0.2); margin: 15px 0;">
+
+        <h4 style="margin-top: 0; color: white;">Nerve Damage Analysis</h4>
+        <div class="control-group">
+            <label style="color: white; font-size: 12px; margin-bottom: 5px; display: block;">Upload Tumor Image /
+                Scan</label>
+            <input type="file" id="tumor-scan-upload" accept="image/*"
+                style="width: 100%; color: white; font-size: 11px;">
+        </div>
+        <button id="analyze-scan-btn" class="btn btn-warning"
+            style="width: 100%; margin-top: 10px; background-color: #f59e0b; border-color: #d97706; padding: 5px;">
+            Analyze Spatial Damage
+        </button>
+    </div>
+
+    <!-- Info Panel -->
+    <div class="info-panel">
+        <h3 style="margin-top: 0; color: white;">Brain Analysis</h3>
+
+        <div id="analysis-info" style="color: white; font-size: 14px;">
+            <p><strong>Status:</strong> <span id="status-text">Initializing...</span></p>
+            <p><strong>Vessels:</strong> <span id="vessel-count"> 0</span></p>
+            <p><strong>Blockages:</strong> <span id="blockage-count">0</span></p>
+            <p><strong>Severity:</strong> <span id="avg-severity">N/A</span></p>
+        </div>
+
+        <div id="selected-info" style="color: white; font-size: 14px; margin-top: 15px; display: none;">
+            <hr style="border-color: rgba(255,255,255,0.2);">
+            <h4 style="margin-bottom: 10px;">Selected Region:</h4>
+            <p><strong>Name:</strong> <span id="region-name">-</span></p>
+            <p><strong>Type:</strong> <span id="region-type">-</span></p>
+            <p><strong>Flow:</strong> <span id="region-flow">-</span></p>
+        </div>
+    </div>
+</div>
+
+<!-- Loading Overlay -->
+<div id="loading-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+     background: rgba(0,0,0,0.8); z-index: 9999; justify-content: center; align-items: center;">
+    <div style="text-align: center; color: white;">
+        <div class="spinner"></div>
+        <p style="margin-top: 20px;">Loading 3D visualization...</p>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script src="{{ url_for('static', filename='js/brain3d.js') }}"></script>
+{% endblock %}

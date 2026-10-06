@@ -1,0 +1,37 @@
+graph TB
+    subgraph "Virtual Brain Inference Project"
+        APP[app.py / create_app]
+        CFG[config.py]
+        
+        subgraph "Routes"
+            R_API[api.py]
+            R_WEB[web.py]
+        end
+        
+        subgraph "Models (AI)"
+            M_DD[disease_detector.py]
+            M_DP[data_processor.py]
+            M_TUM[train_tumor_model.py]
+        end
+        
+        subgraph "Simulation (Neuroscience)"
+            S_NM[neural_mass.py]
+            S_CON[connectome.py]
+            S_BI[bayesian_inference.py]
+        end
+        
+        subgraph "Visualization (WebGL)"
+            V_BM[brain_mesh.py]
+            V_VN[vessel_network.py]
+            V_BD[blockage_detector.py]
+        end
+        
+        APP --> R_API
+        APP --> R_WEB
+        R_API --> M_DD
+        R_API --> S_NM
+        R_API --> V_BM
+        M_DD --> M_DP
+        S_NM --> S_CON
+        V_BM --> V_VN
+    end

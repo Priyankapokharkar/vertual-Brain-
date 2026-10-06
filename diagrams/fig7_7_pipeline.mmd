@@ -1,0 +1,26 @@
+graph TD
+    subgraph "Phase 1: Deep Learning Inference"
+        I[Input NIfTI / Image] --> P[Preprocessing: Scale & Normalization]
+        P --> CNN[3D CNN Model]
+        CNN --> CLASS[Disease Classification]
+        CNN --> LOC[Tumor Localization - 3D Centroid]
+    end
+
+    subgraph "Phase 2: Virtual Brain Simulation"
+        LOC --> CONN[Generate Personalized Connectome]
+        CONN --> JR_MOD[Jansen-Rit Neural Mass Model]
+        JR_MOD --> RK4[4th Order Runge-Kutta Integration]
+        RK4 --> SIGNAL[Simulated EEG/BOLD Signals]
+    end
+
+    subgraph "Phase 3: Network Analysis"
+        SIGNAL --> FC[Compute Functional Connectivity]
+        CONN --> GRAPH[Graph Theory Analysis: Clustering, Path Length]
+    end
+
+    subgraph "Phase 4: Synthesis"
+        CLASS --> R[Clinical Report]
+        SIGNAL --> R
+        GRAPH --> R
+        R --> DASH[Dashboard Visualization]
+    end

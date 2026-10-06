@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}Login - Virtual Brain Inference{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-card card">
+        <div class="auth-header">
+            <svg class="auth-brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
+                <circle cx="12" cy="12" r="3"/>
+            </svg>
+            <h2>Sign In</h2>
+            <p class="auth-subtitle">Access Virtual Brain Inference Suite</p>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="alert-container">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">
+                            <svg class="alert-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                {% if category == 'error' %}
+                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" stroke-width="2"/>
+                                {% else %}
+                                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-width="2"/>
+                                {% endif %}
+                            </svg>
+                            <span>{{ message }}</span>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <form action="{{ url_for('auth.login', next=request.args.get('next', '')) }}" method="POST" class="auth-form">
+            <div class="form-group">
+                <label for="username" class="form-label">Username or Email</label>
+                <input type="text" id="username" name="username" class="form-input" placeholder="Enter your username or email" required autocomplete="username">
+            </div>
+
+            <div class="form-group">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" id="password" name="password" class="form-input" placeholder="Enter your password" required autocomplete="current-password">
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-auth">
+                <span>Sign In</span>
+                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+        </form>
+
+        <div class="auth-footer">
+            <p>New to the platform? <a href="{{ url_for('auth.signup') }}" class="auth-link">Create an account</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}

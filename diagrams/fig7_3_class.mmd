@@ -1,0 +1,51 @@
+classDiagram
+    class FlaskApp {
+        +create_app()
+        +register_blueprints()
+    }
+    
+    class API_Routes {
+        +detect_disease()
+        +simulate_neural_activity()
+        +get_visualization_data()
+    }
+    
+    class DataProcessor {
+        +load_nifti(path)
+        +preprocess(array)
+        +extract_features()
+    }
+    
+    class DiseaseDetector {
+        -model
+        +predict(data)
+        +get_tumor_localization()
+    }
+    
+    class Connectome {
+        +weights
+        +positions
+        +generate_synthetic()
+        +get_network_metrics()
+    }
+    
+    class NeuralMassModel {
+        +params
+        +states
+        +simulate_step()
+        +calculate_functional_connectivity()
+    }
+    
+    class BrainMesh {
+        +vertices
+        +faces
+        +generate_synthetic()
+        +export_to_threejs()
+    }
+    
+    FlaskApp --> API_Routes
+    API_Routes --> DataProcessor
+    API_Routes --> DiseaseDetector
+    API_Routes --> Connectome
+    API_Routes --> NeuralMassModel
+    API_Routes --> BrainMesh
